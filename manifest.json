@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Platzi Course Duration",
+  "description": "Display course duration on Platzi platform",
+  "author": "Jesús Alberto Polo García",
+  "version": "0.1",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://platzi.com/clases/*/"
+      ],
+      "js": ["content.js"]
+    }
+  ]
+}
