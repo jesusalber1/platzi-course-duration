@@ -13,9 +13,6 @@ let playedDuration = 0;
 elemCourses.forEach((elemCourse) => {
   const elemIcon = elemCourse.querySelector('.MaterialProgress-figure');
   const elemDurationText = elemCourse.querySelector('.MaterialContent-duration').textContent;
-  
-  console.log(elemDurationText, elemIcon.classList.contains(seenClass));
-  console.log(!!(elemIcon && elemDurationText))
 
   if (elemIcon && elemDurationText) {
     const videoDuration = parseInt(elemDurationText.split(':')[0]);
