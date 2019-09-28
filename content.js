@@ -24,11 +24,13 @@ elemCourses.forEach((elemCourse) => {
   }
 });
 
-// Convert minutes into hours and minutes 
-const totalHours = Math.floor(totalDuration / 60);
-const totalMinutes = Math.floor(totalDuration % 60);
-const playedHours = Math.floor(playedDuration / 60);
-const playedMinutes = Math.floor(playedDuration % 60);
+// Course duration (hours and minutes)
+const hours = Math.floor(totalDuration / 60);
+const minutes = Math.floor(totalDuration % 60);
+// Remaining course duration (hours and minutes)
+const remainingDuration = totalDuration - playedDuration;
+const remainingHours = Math.floor(remainingDuration / 60);
+const remainingMinutes = Math.floor(remainingDuration % 60);
 
 // Check if duration element exists or create new element
 let elemInfo = document.querySelector(`#${elemDurationId}`);
@@ -38,7 +40,7 @@ if (!elemInfo) {
   elemInfo.id = 'course-duration';
   elemInfo.style = 'font-size: .8em; margin-bottom: 8px;';
 }
-elemInfo.innerHTML = `<span style="margin-right: 1em;"><strong>Tiempo total:</strong> ${totalHours}h ${totalMinutes}m</span>|<span style="margin-left: 1em;"><strong>Tiempo restante:</strong> ${totalHours - playedHours}h ${totalMinutes - playedMinutes}m</span>`;
+elemInfo.innerHTML = `<span style="margin-right: 1em;"><strong>Tiempo total:</strong> ${hours}h ${minutes}m</span>|<span style="margin-left: 1em;"><strong>Tiempo restante:</strong> ${remainingHours}h ${remainingMinutes}m</span>`;
 
 // Insert new element after course title
 elemTitle.parentNode.insertBefore(elemInfo, elemTitle.nextSibling);
