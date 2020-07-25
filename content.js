@@ -1,9 +1,8 @@
 // Get duration and figure elements (duration contains time and figure indicates if video has been played (expected same length)
-const elemCourses = document.querySelectorAll('.Material');
-const elemTitle = document.querySelector('.CourseBanner-title');
-const seenClass = 'is-seen';
+const elemCourses = document.querySelectorAll('.MaterialItem-content');
+const elemCourseDescription = document.querySelector('.CourseDetail-middle-left');
+const elemCourseDuration = document.querySelector('.CourseDetail-middle-right');
 const elemDurationId = 'course-duration';
-//const rate = 1.5;
 
 // Initialize duration variables
 let totalDuration = 0;
@@ -11,36 +10,42 @@ let playedDuration = 0;
 
 // Iterate over both lists
 elemCourses.forEach((elemCourse) => {
-  const elemIcon = elemCourse.querySelector('.MaterialProgress-figure');
-  const elemDurationText = elemCourse.querySelector('.MaterialContent-duration').textContent;
+  // Get element duration
+  const elementDuration = elemCourse.querySelector('.MaterialItem-copy-time');
+  const elemDurationText = elementDuration && elementDuration.textContent;
 
-  if (elemIcon && elemDurationText) {
-    const videoDuration = parseInt(elemDurationText.split(':')[0]);
+  if (elemDurationText) {
+    const timeString = elemDurationText.split(' ')[0]; // 1:23 min -> 1:23
+    const minuteSecondsPair = timeString.split(':'); // [1, 23]
+    const [ minutes, seconds ] = minuteSecondsPair.map((numStr) => parseInt(numStr));
+
+    videoDuration = (minutes * 60) + seconds;
     totalDuration += videoDuration;
     
-    if (elemIcon.classList.contains(seenClass)) {
+    // Determine whether the video has been seen
+    const elemSeen = elemCourse.querySelector('.MaterialItem-viewedoverlay');
+    if (elemSeen) {
       playedDuration += videoDuration;
     }
   }
 });
 
+// Convert total durations to minutes
+totalDuration = Math.round(totalDuration / 60);
+playedDuration = Math.round(playedDuration / 60);
+
 // Course duration (hours and minutes)
-const hours = Math.floor(totalDuration / 60);
-const minutes = Math.floor(totalDuration % 60);
+const hours = Math.round(totalDuration / 60);
+const minutes = Math.round(totalDuration % 60);
+
 // Remaining course duration (hours and minutes)
 const remainingDuration = totalDuration - playedDuration;
-const remainingHours = Math.floor(remainingDuration / 60);
-const remainingMinutes = Math.floor(remainingDuration % 60);
+const remainingHours = Math.round(remainingDuration / 60);
+const remainingMinutes = Math.round(remainingDuration % 60);
 
-// Check if duration element exists or create new element
-let elemInfo = document.querySelector(`#${elemDurationId}`);
-if (!elemInfo) {
-  elemInfo = document.createElement('div');
-  //elemInfo.className = 'icon-clock';
-  elemInfo.id = 'course-duration';
-  elemInfo.style = 'font-size: .8em; margin-bottom: 8px;';
-}
-elemInfo.innerHTML = `<span style="margin-right: 1em;"><strong>Tiempo total:</strong> ${hours}h ${minutes}m</span>|<span style="margin-left: 1em;"><strong>Tiempo restante:</strong> ${remainingHours}h ${remainingMinutes}m</span>`;
-
-// Insert new element after course title
-elemTitle.parentNode.insertBefore(elemInfo, elemTitle.nextSibling);
+// Add computed data to front (substitute previous content)
+elemCourseDuration.innerHTML =
+  `<i class="icon-clock_B"></i>
+  <span class="CourseDetail-middle-right-text">
+    ${hours}h ${minutes}m de contenido (${remainingHours}h ${remainingMinutes}m restantes)
+  </span>`;

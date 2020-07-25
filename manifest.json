@@ -3,11 +3,11 @@
   "name": "Platzi course duration",
   "description": "Display course duration on Platzi platform",
   "author": "Jesús Alberto Polo García",
-  "version": "0.3",
+  "version": "1.0",
   "content_scripts": [
     {
       "matches": [
-        "https://platzi.com/clases/*/"
+        "https://platzi.com/clases/*"
       ],
       "js": ["content.js"]
     }
